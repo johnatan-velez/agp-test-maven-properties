@@ -21,7 +21,7 @@
     <junit.version>4.13.2</junit.version>
 
     <!-- TC2: Outdated — AGP upgrade should SUCCEED -->
-    <slf4j.version>1.7.36</slf4j.version>
+    <slf4j.version>2.0.17</slf4j.version>
 
     <!-- TC3: Another outdated property — AGP upgrade should SUCCEED -->
     <commons-lang3.version>3.12.0</commons-lang3.version>
