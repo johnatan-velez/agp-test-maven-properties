@@ -1,0 +1,96 @@
+# Sonatype Guide — Agentic Patches (AGP) Configuration
+# Learn more: https://guide.sonatype.com
+# File: agp.yml
+
+# Required — configuration schema version
+version: "1"
+
+# ── Ignore rules ──────────────────────────────────────────
+# Paths and packages AGP should skip during scanning.
+ignore:
+  paths:
+    - "**/target/**"
+    - "**/.idea/**"
+  # packages:
+  #   - "com.example:legacy-lib"  # Package names to never upgrade
+
+# ── AI agent settings ────────────────────────────────────
+# Enables an AI agent to automatically attempt fixes
+# when a simple version bump breaks the build.
+agent:
+  enabled: false
+  provider: anthropic
+  model: claude-sonnet-4-5
+  maxFixAttempts: 3
+  timeout: 30m
+
+# ── Build validation ─────────────────────────────────────
+# Runs after each upgrade to verify the project still builds.
+# Commands are specific to this Maven/Java 17 project.
+validation:
+  enabled: true
+  commands:
+    - "mvn compile -q"
+    - "mvn test -q"
+  timeout: 10m
+
+# ── Pull request settings ────────────────────────────────
+# Controls how AGP creates and labels upgrade PRs.
+pr:
+  labels:
+    - dependencies
+    - automated
+    - agp
+  draft: false
+  titleTemplate: "chore(deps): {{.GroupName}}"
+  branchTemplate: "agp/{{.GroupID}}"
+  # reviewers:
+  #   - "your-github-username"
+
+# ── Rate limits ──────────────────────────────────────────
+# Prevents AGP from opening too many PRs at once.
+limits:
+  maxOpenPRs: 5
+  maxPRsPerRun: 10
+  waitPeriod:
+    major: 7d
+    minor: 3d
+    patch: 1d
+
+# ── Auto-merge ───────────────────────────────────────────
+# Automatically merge PRs that pass all checks.
+# Disabled by default — enable after gaining confidence.
+automerge:
+  enabled: false
+  method: squash
+  # method: merge
+  # method: rebase
+
+# ── Grouping strategy ────────────────────────────────────
+# Controls how dependency updates are grouped into PRs.
+# "individual" = one PR per dependency (or property group).
+grouping:
+  strategy: individual
+  # rules:
+  #   - name: "slf4j"
+  #     match:
+  #       - "org.slf4j:*"
+
+# ── Monorepo / multi-project overrides ───────────────────
+# This is a single-module Maven project — no sub-projects.
+# Uncomment and populate if you convert to a multi-module layout.
+# projects:
+#   api:
+#     path: api
+#     ecosystem: maven
+#     validation:
+#       enabled: true
+#       commands:
+#         - "mvn compile -q -pl api"
+#   web:
+#     path: web
+#     ecosystem: maven
+#     validation:
+#       enabled: true
+#       commands:
+#         - "mvn compile -q -pl web"
