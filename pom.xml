@@ -24,7 +24,7 @@
     <slf4j.version>1.7.36</slf4j.version>
 
     <!-- TC3: Another outdated property — AGP upgrade should SUCCEED -->
-    <commons-lang3.version>3.12.0</commons-lang3.version>
+    <commons-lang3.version>3.18.0</commons-lang3.version>
   </properties>
 
   <dependencies>
