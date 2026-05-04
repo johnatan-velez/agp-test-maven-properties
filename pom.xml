@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.sonatype.test</groupId>
+  <artifactId>agp-test-maven-properties</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>AGP Test - Maven Property Versions</name>
+  <description>Test repo for GUIDE-2167: verifies AGP handles property-based dependency versions correctly</description>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- TC1: Already at latest — AGP downgrade attempt should be SKIPPED -->
+    <junit.version>4.13.2</junit.version>
+
+    <!-- TC2: Outdated — AGP upgrade should SUCCEED -->
+    <slf4j.version>1.7.36</slf4j.version>
+
+    <!-- TC3: Another outdated property — AGP upgrade should SUCCEED -->
+    <commons-lang3.version>3.12.0</commons-lang3.version>
+  </properties>
+
+  <dependencies>
+    <!-- junit at 4.13.2 (latest 4.x) — any "update" would be a downgrade or cross-major -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- slf4j-api at 1.7.36 — upgradeable to 2.x -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <!-- jcl-over-slf4j shares the same slf4j.version property -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <!-- commons-lang3 at 3.12.0 — upgradeable to 3.14+ -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
+    </dependency>
+  </dependencies>
+</project>
